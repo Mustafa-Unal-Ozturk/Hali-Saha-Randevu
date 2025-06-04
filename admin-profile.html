@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Profilim - Saha Sahibi Paneli</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Roboto', sans-serif;
+        background: #f5f5f5;
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 30px;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+      }
+
+      .header h1 {
+        color: #2E7D32;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0;
+      }
+
+      .header i {
+        color: #4CAF50;
+      }
+
+      .menu-buttons {
+        display: flex;
+        gap: 15px;
+      }
+
+      .menu-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        background: #f5f5f5;
+        color: #333;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+      }
+
+      .menu-button:hover {
+        background: #e8f5e9;
+        color: #2E7D32;
+        transform: translateY(-2px);
+      }
+
+      .menu-button.active {
+        background: #4CAF50;
+        color: white;
+      }
+
+      .profile-section {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .profile-info {
+        text-align: right;
+      }
+
+      .profile-name {
+        font-weight: 500;
+        color: #333;
+        font-size: 16px;
+      }
+
+      .profile-email {
+        font-size: 13px;
+        color: #666;
+      }
+
+      .logout-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        background: #f5f5f5;
+        color: #333;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s ease;
+      }
+
+      .logout-button:hover {
+        background: #ffebee;
+        color: #f44336;
+        transform: translateY(-2px);
+      }
+
+      .main-content {
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .profile-card {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .profile-header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .profile-avatar {
+        width: 120px;
+        height: 120px;
+        background: #e8f5e9;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 48px;
+        color: #2E7D32;
+      }
+
+      .profile-title {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .profile-subtitle {
+        color: #666;
+        font-size: 16px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+        font-weight: 500;
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+      }
+
+      .form-input:focus {
+        border-color: #4CAF50;
+        box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+        outline: none;
+      }
+
+      .form-button {
+        width: 100%;
+        padding: 12px;
+        background: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .form-button:hover {
+        background: #388E3C;
+      }
+
+      .form-button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+
+      .alert {
+        padding: 15px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        font-size: 14px;
+      }
+
+      .alert-success {
+        background: #e8f5e9;
+        color: #2E7D32;
+        border: 1px solid #c8e6c9;
+      }
+
+      .alert-error {
+        background: #ffebee;
+        color: #f44336;
+        border: 1px solid #ffcdd2;
+      }
+
+      @media (max-width: 768px) {
+        .header {
+          flex-direction: column;
+          gap: 20px;
+        }
+        
+        .header-left {
+          flex-direction: column;
+          gap: 15px;
+          width: 100%;
+        }
+
+        .menu-buttons {
+          width: 100%;
+          justify-content: center;
+        }
+        
+        .profile-section {
+          flex-direction: column;
+          text-align: center;
+          width: 100%;
+        }
+
+        .profile-info {
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="header-left">
+          <h1><i class="fas fa-user"></i> Profilim</h1>
+          <div class="menu-buttons">
+            <a href="admin.html" class="menu-button">
+              <i class="fas fa-home"></i>
+              Ana Sayfa
+            </a>
+            <a href="admin-profile.html" class="menu-button active">
+              <i class="fas fa-user"></i>
+              Profilim
+            </a>
+          </div>
+        </div>
+        <div class="profile-section">
+          <div class="profile-info">
+            <div class="profile-name" id="profileName"></div>
+            <div class="profile-email" id="profileEmail"></div>
+          </div>
+          <button class="logout-button" onclick="handleLogout()">
+            <i class="fas fa-sign-out-alt"></i>
+            Çıkış Yap
+          </button>
+        </div>
+      </div>
+      
+      <div class="main-content">
+        <div class="profile-card">
+          <div class="profile-header">
+            <div class="profile-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <h2 class="profile-title" id="profileTitle"></h2>
+            <p class="profile-subtitle" id="profileSubtitle"></p>
+          </div>
+
+          <div id="alertBox"></div>
+
+          <form id="profileForm" onsubmit="handleProfileUpdate(event)">
+            <div class="form-group">
+              <label class="form-label">Ad Soyad</label>
+              <input type="text" class="form-input" id="nameInput" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">E-posta</label>
+              <input type="email" class="form-input" id="emailInput" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Telefon</label>
+              <input type="tel" class="form-input" id="phoneInput" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Yeni Şifre (Değiştirmek istemiyorsanız boş bırakın)</label>
+              <input type="password" class="form-input" id="passwordInput">
+            </div>
+
+            <button type="submit" class="form-button" id="updateButton">
+              <i class="fas fa-save"></i>
+              Profili Güncelle
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Kullanıcı kontrolü
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      if (!currentUser || currentUser.type !== 'admin') {
+        window.location.href = 'index.html';
+      }
+
+      // Profil bilgilerini yükle
+      document.getElementById('profileName').textContent = currentUser.name;
+      document.getElementById('profileEmail').textContent = currentUser.email;
+      document.getElementById('profileTitle').textContent = currentUser.name;
+      document.getElementById('profileSubtitle').textContent = currentUser.email;
+
+      // Form alanlarını doldur
+      document.getElementById('nameInput').value = currentUser.name;
+      document.getElementById('emailInput').value = currentUser.email;
+      document.getElementById('phoneInput').value = currentUser.phone || '';
+
+      function showAlert(message, type) {
+        const alertBox = document.getElementById('alertBox');
+        alertBox.innerHTML = `
+          <div class="alert alert-${type}">
+            ${message}
+          </div>
+        `;
+
+        // 3 saniye sonra bildirimi kaldır
+        setTimeout(() => {
+          alertBox.innerHTML = '';
+        }, 3000);
+      }
+
+      function handleProfileUpdate(event) {
+        event.preventDefault();
+        
+        const name = document.getElementById('nameInput').value;
+        const email = document.getElementById('emailInput').value;
+        const phone = document.getElementById('phoneInput').value;
+        const password = document.getElementById('passwordInput').value;
+
+        // E-posta kontrolü
+        const users = JSON.parse(localStorage.getItem('users')) || { player: [], admin: [] };
+        const emailExists = users.admin.some(user => 
+          user.email === email && user.id !== currentUser.id
+        );
+
+        if (emailExists) {
+          showAlert('Bu e-posta adresi başka bir kullanıcı tarafından kullanılıyor.', 'error');
+          return;
+        }
+
+        // Kullanıcı bilgilerini güncelle
+        const updatedUser = {
+          ...currentUser,
+          name,
+          email,
+          phone
+        };
+
+        if (password) {
+          updatedUser.password = password;
+        }
+
+        // LocalStorage'ı güncelle
+        const userIndex = users.admin.findIndex(user => user.id === currentUser.id);
+        if (userIndex !== -1) {
+          users.admin[userIndex] = updatedUser;
+          localStorage.setItem('users', JSON.stringify(users));
+          localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+
+          // Profil bilgilerini güncelle
+          document.getElementById('profileName').textContent = name;
+          document.getElementById('profileEmail').textContent = email;
+          document.getElementById('profileTitle').textContent = name;
+          document.getElementById('profileSubtitle').textContent = email;
+
+          showAlert('Profil bilgileriniz başarıyla güncellendi.', 'success');
+          document.getElementById('passwordInput').value = '';
+        } else {
+          showAlert('Profil güncellenirken bir hata oluştu.', 'error');
+        }
+      }
+
+      function handleLogout() {
+        localStorage.removeItem('currentUser');
+        window.location.href = 'index.html';
+      }
+    </script>
+  </body>
+</html> 

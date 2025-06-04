@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rezervasyonlarım - Futbol Saha Rezervasyon</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Roboto', sans-serif;
+        background: #f5f5f5;
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 30px;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+      }
+
+      .header h1 {
+        color: #2E7D32;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0;
+      }
+
+      .header i {
+        color: #4CAF50;
+      }
+
+      .menu-buttons {
+        display: flex;
+        gap: 15px;
+      }
+
+      .menu-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        background: #f5f5f5;
+        color: #333;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+      }
+
+      .menu-button:hover {
+        background: #e8f5e9;
+        color: #2E7D32;
+        transform: translateY(-2px);
+      }
+
+      .menu-button.active {
+        background: #4CAF50;
+        color: white;
+      }
+
+      .profile-section {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .profile-info {
+        text-align: right;
+      }
+
+      .profile-name {
+        font-weight: 500;
+        color: #333;
+        font-size: 16px;
+      }
+
+      .profile-email {
+        font-size: 13px;
+        color: #666;
+      }
+
+      .logout-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        background: #f5f5f5;
+        color: #333;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s ease;
+      }
+
+      .logout-button:hover {
+        background: #ffebee;
+        color: #f44336;
+        transform: translateY(-2px);
+      }
+
+      .main-content {
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .reservations-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px;
+      }
+
+      .reservation-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .reservation-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+      }
+
+      .reservation-header {
+        background: #4CAF50;
+        color: white;
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .reservation-field {
+        font-size: 18px;
+        font-weight: 500;
+      }
+
+      .reservation-status {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      .reservation-content {
+        padding: 20px;
+      }
+
+      .reservation-info {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .reservation-detail {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #666;
+      }
+
+      .reservation-detail i {
+        width: 20px;
+        color: #4CAF50;
+      }
+
+      .reservation-actions {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+      }
+
+      .reservation-actions .button {
+        flex: 1;
+      }
+
+      .status-pending {
+        background: #fff3e0;
+        color: #f57c00;
+      }
+
+      .status-confirmed {
+        background: #e8f5e9;
+        color: #2E7D32;
+      }
+
+      .status-cancelled {
+        background: #ffebee;
+        color: #f44336;
+      }
+
+      .no-reservations {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 40px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .no-reservations i {
+        font-size: 48px;
+        color: #4CAF50;
+        margin-bottom: 20px;
+      }
+
+      .no-reservations p {
+        color: #666;
+        font-size: 16px;
+      }
+
+      .reservation-price {
+        font-size: 20px;
+        font-weight: 500;
+        color: #2E7D32;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+      }
+
+      .reservation-date {
+        font-size: 16px;
+        font-weight: 500;
+        color: #333;
+      }
+
+      .reservation-time {
+        font-size: 14px;
+        color: #666;
+      }
+
+      .reservation-location {
+        font-size: 14px;
+        color: #666;
+      }
+
+      .reservation-phone {
+        font-size: 14px;
+        color: #666;
+      }
+
+      .reservation-iban {
+        font-size: 14px;
+        color: #666;
+        word-break: break-all;
+      }
+
+      .reservation-iban i {
+        color: #2196F3;
+      }
+
+      .reservation-iban span {
+        font-weight: 500;
+        color: #2196F3;
+      }
+
+      .receipt-section {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+      }
+
+      .receipt-upload {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .receipt-preview {
+        max-width: 200px;
+        border-radius: 8px;
+        display: none;
+      }
+
+      .receipt-preview.show {
+        display: block;
+      }
+
+      .receipt-status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: #666;
+      }
+
+      .receipt-status i {
+        color: #4CAF50;
+      }
+
+      .receipt-status.pending i {
+        color: #f57c00;
+      }
+
+      .receipt-status.verified i {
+        color: #4CAF50;
+      }
+
+      .receipt-status.rejected i {
+        color: #f44336;
+      }
+
+      .button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .button.delete {
+        background: #ffebee;
+        color: #f44336;
+      }
+
+      .button.delete:hover {
+        background: #f44336;
+        color: white;
+      }
+
+      .button.upload {
+        background: #e3f2fd;
+        color: #1976d2;
+      }
+
+      .button.upload:hover {
+        background: #1976d2;
+        color: white;
+      }
+
+      .button.upload:disabled {
+        background: #e0e0e0;
+        color: #9e9e9e;
+        cursor: not-allowed;
+      }
+
+      .receipt-input {
+        display: none;
+      }
+
+      .notification {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 15px 30px;
+        border-radius: 8px;
+        font-size: 16px;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+      }
+
+      .notification.show {
+        opacity: 1;
+      }
+
+      .notification i {
+        font-size: 20px;
+      }
+
+      .notification.success {
+        background: rgba(46, 125, 50, 0.9);
+      }
+
+      .notification.error {
+        background: rgba(244, 67, 54, 0.9);
+      }
+
+      .notification.info {
+        background: rgba(33, 150, 243, 0.9);
+      }
+
+      @media (max-width: 768px) {
+        .header {
+          flex-direction: column;
+          gap: 20px;
+        }
+        
+        .header-left {
+          flex-direction: column;
+          gap: 15px;
+          width: 100%;
+        }
+
+        .menu-buttons {
+          width: 100%;
+          justify-content: center;
+        }
+        
+        .profile-section {
+          flex-direction: column;
+          text-align: center;
+          width: 100%;
+        }
+
+        .profile-info {
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="header-left">
+          <h1><i class="fas fa-futbol"></i> Rezervasyonlarım</h1>
+          <div class="menu-buttons">
+            <a href="player.html" class="menu-button">
+              <i class="fas fa-futbol"></i>
+              Sahalar
+            </a>
+            <a href="player-reservations.html" class="menu-button active">
+              <i class="fas fa-calendar-check"></i>
+              Rezervasyonlarım
+            </a>
+            <a href="player-profile.html" class="menu-button">
+              <i class="fas fa-user"></i>
+              Profilim
+            </a>
+          </div>
+        </div>
+        <div class="profile-section">
+          <div class="profile-info">
+            <div class="profile-name" id="profileName"></div>
+            <div class="profile-email" id="profileEmail"></div>
+          </div>
+          <button class="logout-button" onclick="handleLogout()">
+            <i class="fas fa-sign-out-alt"></i>
+            Çıkış Yap
+          </button>
+        </div>
+      </div>
+      
+      <div class="main-content">
+        <div id="reservationsList" class="reservations-list">
+          <!-- Rezervasyonlar JavaScript ile eklenecek -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Bildirim elementi -->
+    <div id="notification" class="notification">
+      <i class="fas fa-info-circle"></i>
+      <span id="notificationText"></span>
+    </div>
+
+    <script>
+      // Kullanıcı kontrolü
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      if (!currentUser || currentUser.type !== 'player') {
+        window.location.href = 'index.html';
+      }
+
+      // Profil bilgilerini yükle
+      document.getElementById('profileName').textContent = currentUser.name;
+      document.getElementById('profileEmail').textContent = currentUser.email;
+
+      function loadReservations() {
+        const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+        const fields = JSON.parse(localStorage.getItem('fields')) || [];
+        const users = JSON.parse(localStorage.getItem('users')) || { admin: [] };
+        
+        // Oyuncunun rezervasyonlarını filtrele
+        const playerReservations = reservations.filter(r => r.playerId === currentUser.id);
+        
+        const reservationsList = document.getElementById('reservationsList');
+        
+        if (playerReservations.length === 0) {
+          reservationsList.innerHTML = `
+            <div class="no-reservations">
+              <i class="fas fa-calendar-check"></i>
+              <p>Henüz hiç rezervasyonunuz bulunmuyor.</p>
+              <p>Saha keşfet bölümünden rezervasyon yapabilirsiniz.</p>
+            </div>
+          `;
+          return;
+        }
+        
+        reservationsList.innerHTML = '';
+        
+        playerReservations.forEach(reservation => {
+          const field = fields.find(f => f.id === reservation.fieldId);
+          const admin = users.admin.find(a => a.id === field.adminId);
+          
+          const statusText = {
+            pending: 'Onay Bekliyor',
+            confirmed: 'Onaylandı',
+            cancelled: 'İptal Edildi'
+          };
+          
+          const statusClass = {
+            pending: 'status-pending',
+            confirmed: 'status-confirmed',
+            cancelled: 'status-cancelled'
+          };
+          
+          const card = document.createElement('div');
+          card.className = 'reservation-card';
+          card.innerHTML = `
+            <div class="reservation-header">
+              <div class="reservation-field">
+                <i class="fas fa-futbol"></i>
+                ${field.name}
+              </div>
+              <div class="reservation-status ${statusClass[reservation.status]}">
+                ${statusText[reservation.status]}
+              </div>
+            </div>
+            <div class="reservation-content">
+              <div class="reservation-info">
+                <div class="reservation-detail">
+                  <i class="fas fa-calendar"></i>
+                  <div>
+                    <div class="reservation-date">${reservation.date}</div>
+                    <div class="reservation-time">${reservation.time}</div>
+                  </div>
+                </div>
+                <div class="reservation-detail">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <div class="reservation-location">${field.location}, ${field.city}</div>
+                </div>
+                <div class="reservation-detail">
+                  <i class="fas fa-phone"></i>
+                  <div class="reservation-phone">${field.phone}</div>
+                </div>
+                ${reservation.status === 'confirmed' ? `
+                  <div class="reservation-detail">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <div class="reservation-iban">
+                      Ödeme için IBAN: <span>${admin.iban}</span>
+                    </div>
+                  </div>
+                  <div class="receipt-section">
+                    <div class="receipt-upload">
+                      ${reservation.receipt ? `
+                        <div class="receipt-status ${reservation.receiptStatus || 'pending'}">
+                          <i class="fas ${reservation.receiptStatus === 'verified' ? 'fa-check-circle' : 
+                                         reservation.receiptStatus === 'rejected' ? 'fa-times-circle' : 
+                                         'fa-clock'}"></i>
+                          ${reservation.receiptStatus === 'verified' ? 'Dekont Onaylandı' : 
+                            reservation.receiptStatus === 'rejected' ? 'Dekont Reddedildi' : 
+                            'Dekont İnceleniyor'}
+                        </div>
+                        <img src="${reservation.receipt}" alt="Dekont" class="receipt-preview show">
+                        ${!reservation.receiptStatus || reservation.receiptStatus === 'rejected' ? `
+                          <button class="button upload" onclick="document.getElementById('receipt-${reservation.id}').click()">
+                            <i class="fas fa-upload"></i>
+                            Dekontu Güncelle
+                          </button>
+                        ` : ''}
+                      ` : `
+                        <button class="button upload" onclick="document.getElementById('receipt-${reservation.id}').click()">
+                          <i class="fas fa-upload"></i>
+                          Dekont Yükle
+                        </button>
+                      `}
+                      <input type="file" 
+                             id="receipt-${reservation.id}" 
+                             class="receipt-input" 
+                             accept="image/*"
+                             onchange="uploadReceipt('${reservation.id}', this.files[0])">
+                    </div>
+                  </div>
+                ` : ''}
+                <div class="reservation-price">
+                  ${field.price} TL
+                </div>
+              </div>
+              ${reservation.status === 'pending' ? `
+                <div class="reservation-actions">
+                  <button class="button delete" onclick="cancelReservation('${reservation.id}')">
+                    <i class="fas fa-times"></i>
+                    İptal Et
+                  </button>
+                </div>
+              ` : ''}
+            </div>
+          `;
+          
+          reservationsList.appendChild(card);
+        });
+      }
+
+      function cancelReservation(reservationId) {
+        if (confirm('Rezervasyonu iptal etmek istediğinize emin misiniz?')) {
+          const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+          const reservationIndex = reservations.findIndex(r => r.id === reservationId);
+          
+          if (reservationIndex !== -1) {
+            reservations[reservationIndex].status = 'cancelled';
+            localStorage.setItem('reservations', JSON.stringify(reservations));
+            loadReservations();
+            showNotification('Rezervasyon iptal edildi', 'info');
+          }
+        }
+      }
+
+      function showNotification(message, type = 'info', duration = 3000) {
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notificationText');
+        
+        // Bildirim tipine göre ikon seç
+        let icon = 'fa-info-circle';
+        if (type === 'success') icon = 'fa-check-circle';
+        if (type === 'error') icon = 'fa-exclamation-circle';
+        
+        // Bildirim içeriğini güncelle
+        notification.innerHTML = `
+          <i class="fas ${icon}"></i>
+          <span>${message}</span>
+        `;
+        
+        // Bildirim tipini ayarla
+        notification.className = `notification ${type}`;
+        
+        // Bildirimi göster
+        notification.classList.add('show');
+        
+        // Belirtilen süre sonra bildirimi gizle
+        setTimeout(() => {
+          notification.classList.remove('show');
+        }, duration);
+      }
+
+      function uploadReceipt(reservationId, file) {
+        if (!file) return;
+
+        // Dosya boyutu kontrolü (5MB)
+        if (file.size > 5 * 1024 * 1024) {
+          showNotification('Dekont boyutu 5MB\'dan küçük olmalıdır', 'error');
+          return;
+        }
+
+        // Dosya tipi kontrolü
+        if (!file.type.startsWith('image/')) {
+          showNotification('Lütfen geçerli bir resim dosyası yükleyin', 'error');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+          const reservationIndex = reservations.findIndex(r => r.id === reservationId);
+          
+          if (reservationIndex !== -1) {
+            // Dekont bilgilerini güncelle
+            reservations[reservationIndex] = {
+              ...reservations[reservationIndex],
+              receipt: e.target.result,
+              receiptStatus: 'pending',
+              receiptDate: new Date().toISOString()
+            };
+            
+            // localStorage'a kaydet
+            localStorage.setItem('reservations', JSON.stringify(reservations));
+            
+            // Sayfayı yenile
+            loadReservations();
+            showNotification('Dekont başarıyla yüklendi', 'success');
+            
+            // Debug için konsola yazdır
+            console.log('Dekont yüklendi:', reservations[reservationIndex]);
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function handleLogout() {
+        localStorage.removeItem('currentUser');
+        window.location.href = 'index.html';
+      }
+
+      // Sayfa yüklendiğinde rezervasyonları yükle
+      document.addEventListener('DOMContentLoaded', loadReservations);
+    </script>
+  </body>
+</html> 

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rezervasyon Yap - Futbol Saha Rezervasyon</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Roboto', sans-serif;
+        background: #f5f5f5;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 30px;
+      }
+
+      .header h1 {
+        color: #2E7D32;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .field-info {
+        margin-bottom: 30px;
+        padding: 25px;
+        background: #f9f9f9;
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+      }
+
+      .field-name {
+        font-size: 22px;
+        color: #2E7D32;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .field-detail {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 10px 0;
+        color: #666;
+        font-size: 16px;
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+        position: relative;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+        font-weight: 500;
+        font-size: 15px;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: #f9f9f9;
+      }
+
+      .form-control:focus {
+        border-color: #4CAF50;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        background: white;
+      }
+
+      .button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 15px 30px;
+        background: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+      }
+
+      .button:hover {
+        background: #388E3C;
+        transform: translateY(-2px);
+      }
+
+      .back-button {
+        background: #f5f5f5;
+        color: #666;
+      }
+
+      .back-button:hover {
+        background: #e0e0e0;
+      }
+
+      .error-message {
+        color: #f44336;
+        margin-top: 10px;
+        font-size: 14px;
+        display: none;
+      }
+
+      .time-slots {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .time-slot {
+        padding: 10px;
+        text-align: center;
+        background: #f5f5f5;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .time-slot:hover {
+        background: #e8f5e9;
+        border-color: #4CAF50;
+      }
+
+      .time-slot.selected {
+        background: #4CAF50;
+        color: white;
+        border-color: #4CAF50;
+      }
+
+      .time-slot.unavailable {
+        background: #ffebee;
+        color: #666;
+        cursor: not-allowed;
+        border-color: #f44336;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1><i class="fas fa-calendar-check"></i> Rezervasyon Yap</h1>
+        <button class="button back-button" onclick="window.location.href='player.html'">
+          <i class="fas fa-arrow-left"></i>
+          Geri Dön
+        </button>
+      </div>
+
+      <div id="fieldInfo" class="field-info">
+        <!-- Saha bilgileri JavaScript ile eklenecek -->
+      </div>
+
+      <form id="reservationForm" onsubmit="handleReservation(event)">
+        <div class="form-group">
+          <label for="date">Tarih</label>
+          <input type="date" id="date" class="form-control" required min="">
+          <div class="error-message" id="dateError"></div>
+        </div>
+
+        <div class="form-group">
+          <label>Saat</label>
+          <div class="time-slots" id="timeSlots">
+            <!-- Saat seçenekleri JavaScript ile eklenecek -->
+          </div>
+          <div class="error-message" id="timeError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="notes">Notlar (Opsiyonel)</label>
+          <textarea id="notes" class="form-control" rows="3"></textarea>
+        </div>
+
+        <button type="submit" class="button">
+          <i class="fas fa-check"></i>
+          Rezervasyon Yap
+        </button>
+      </form>
+    </div>
+
+    <script>
+      // URL'den saha ID'sini al
+      const urlParams = new URLSearchParams(window.location.search);
+      const fieldId = urlParams.get('fieldId');
+
+      // Kullanıcı kontrolü
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      if (!currentUser || currentUser.type !== 'player') {
+        window.location.href = 'index.html';
+      }
+
+      // Saha bilgilerini yükle
+      function loadFieldInfo() {
+        const fields = JSON.parse(localStorage.getItem('fields')) || [];
+        const field = fields.find(f => f.id === fieldId);
+        
+        if (!field) {
+          window.location.href = 'player.html';
+          return;
+        }
+
+        document.getElementById('fieldInfo').innerHTML = `
+          <div class="field-name">
+            <i class="fas fa-futbol"></i>
+            ${field.name}
+          </div>
+          <div class="field-detail">
+            <i class="fas fa-map-marker-alt"></i>
+            ${field.location}, ${field.city}
+          </div>
+          <div class="field-detail">
+            <i class="fas fa-tag"></i>
+            ${field.price} TL/saat
+          </div>
+        `;
+
+        // Minimum tarihi bugün olarak ayarla
+        const today = new Date();
+        const minDate = today.toISOString().split('T')[0];
+        document.getElementById('date').min = minDate;
+      }
+
+      // Saat seçeneklerini oluştur
+      function createTimeSlots() {
+        const timeSlots = document.getElementById('timeSlots');
+        timeSlots.innerHTML = '';
+        
+        for (let hour = 8; hour <= 22; hour++) {
+          const timeSlot = document.createElement('div');
+          timeSlot.className = 'time-slot';
+          timeSlot.textContent = `${hour}:00`;
+          timeSlot.onclick = () => selectTimeSlot(timeSlot);
+          timeSlots.appendChild(timeSlot);
+        }
+      }
+
+      // Saat seçimi
+      function selectTimeSlot(slot) {
+        const slots = document.querySelectorAll('.time-slot');
+        slots.forEach(s => s.classList.remove('selected'));
+        slot.classList.add('selected');
+        document.getElementById('timeError').style.display = 'none';
+      }
+
+      // Rezervasyon işlemi
+      function handleReservation(event) {
+        event.preventDefault();
+
+        const date = document.getElementById('date').value;
+        const selectedSlot = document.querySelector('.time-slot.selected');
+        const notes = document.getElementById('notes').value;
+
+        // Hata mesajlarını temizle
+        document.getElementById('dateError').style.display = 'none';
+        document.getElementById('timeError').style.display = 'none';
+
+        // Tarih kontrolü
+        if (!date) {
+          document.getElementById('dateError').textContent = 'Lütfen bir tarih seçin';
+          document.getElementById('dateError').style.display = 'block';
+          return;
+        }
+
+        // Saat kontrolü
+        if (!selectedSlot) {
+          document.getElementById('timeError').textContent = 'Lütfen bir saat seçin';
+          document.getElementById('timeError').style.display = 'block';
+          return;
+        }
+
+        const time = selectedSlot.textContent;
+
+        // Rezervasyonları al
+        const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+        
+        // Rezervasyon kontrolü
+        const isAlreadyReserved = reservations.some(r => 
+          r.fieldId === fieldId && 
+          r.date === date && 
+          r.time === time
+        );
+        
+        if (isAlreadyReserved) {
+          document.getElementById('timeError').textContent = 'Bu saat için rezervasyon zaten yapılmış!';
+          document.getElementById('timeError').style.display = 'block';
+          return;
+        }
+
+        // Yeni rezervasyonu ekle
+        const reservation = {
+          id: Date.now().toString(),
+          fieldId: fieldId,
+          playerId: currentUser.id,
+          date: date,
+          time: time,
+          notes: notes,
+          status: 'pending',
+          createdAt: new Date().toISOString()
+        };
+
+        reservations.push(reservation);
+        localStorage.setItem('reservations', JSON.stringify(reservations));
+
+        alert('Rezervasyonunuz başarıyla oluşturuldu!');
+        // Rezervasyonlarım kısmına yönlendir
+        window.location.href = 'player.html#reservations';
+      }
+
+      // Sayfa yüklendiğinde
+      loadFieldInfo();
+      createTimeSlots();
+
+      // Sayfa yüklendiğinde Rezervasyonlarım kısmını göster
+      window.addEventListener('load', function() {
+        if (window.location.hash === '#reservations') {
+          showSection('reservations');
+        }
+      });
+
+      // Tarih değiştiğinde saat seçeneklerini güncelle
+      document.getElementById('date').addEventListener('change', function() {
+        const date = this.value;
+        const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+        
+        // Seçili tarihteki rezervasyonları bul
+        const dateReservations = reservations.filter(r => 
+          r.fieldId === fieldId && 
+          r.date === date
+        );
+
+        // Saat seçeneklerini güncelle
+        const timeSlots = document.querySelectorAll('.time-slot');
+        timeSlots.forEach(slot => {
+          const time = slot.textContent;
+          const isReserved = dateReservations.some(r => r.time === time);
+          
+          if (isReserved) {
+            slot.classList.add('unavailable');
+            slot.onclick = null;
+          } else {
+            slot.classList.remove('unavailable');
+            slot.onclick = () => selectTimeSlot(slot);
+          }
+        });
+      });
+    </script>
+  </body>
+</html> 
