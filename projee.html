@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Futbol Saha Rezervasyon Sistemi</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Roboto', sans-serif;
+        background: #f5f5f5;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .container {
+        max-width: 1200px;
+        width: 100%;
+        padding: 20px;
+      }
+
+      .login-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+      }
+
+      .login-card {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .login-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .login-card h2 {
+        color: #2E7D32;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+        font-weight: 500;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+      }
+
+      .form-group input:focus {
+        border-color: #4CAF50;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+      }
+
+      .button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 12px;
+        background: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .button:hover {
+        background: #388E3C;
+        transform: translateY(-2px);
+      }
+
+      .form-switch {
+        text-align: center;
+        margin-top: 15px;
+      }
+
+      .form-switch button {
+        background: none;
+        border: none;
+        color: #4CAF50;
+        cursor: pointer;
+        font-size: 14px;
+        text-decoration: underline;
+      }
+
+      .form-switch button:hover {
+        color: #388E3C;
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        margin-top: 50px;
+      }
+
+      .feature-card {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .feature-card i {
+        font-size: 2.5rem;
+        color: #4CAF50;
+        margin-bottom: 20px;
+      }
+
+      .feature-card h3 {
+        color: #333;
+        margin-bottom: 15px;
+      }
+
+      .feature-card p {
+        color: #666;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 768px) {
+        .login-section {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="login-section">
+        <div class="login-card">
+          <h2><i class="fas fa-user"></i> Oyuncu Girişi</h2>
+          <form id="playerLoginForm" onsubmit="return handleLogin(event, 'player')">
+            <div class="form-group">
+              <label for="playerEmail">E-posta</label>
+              <input type="email" id="playerEmail" required>
+            </div>
+            <div class="form-group">
+              <label for="playerPassword">Şifre</label>
+              <input type="password" id="playerPassword" required>
+            </div>
+            <button type="submit" class="button">
+              <i class="fas fa-sign-in-alt"></i>
+              Giriş Yap
+            </button>
+            <div class="form-switch">
+              <button type="button" onclick="showRegisterForm('player')">
+                Hesabınız yok mu? Hemen kaydolun
+              </button>
+            </div>
+          </form>
+          <form id="playerRegisterForm" style="display: none;" onsubmit="return handleRegister(event, 'player')">
+            <div class="form-group">
+              <label for="playerRegisterName">Ad Soyad</label>
+              <input type="text" id="playerRegisterName" required>
+            </div>
+            <div class="form-group">
+              <label for="playerRegisterEmail">E-posta</label>
+              <input type="email" id="playerRegisterEmail" required>
+            </div>
+            <div class="form-group">
+              <label for="playerRegisterPhone">Telefon</label>
+              <input type="tel" id="playerRegisterPhone" required>
+            </div>
+            <div class="form-group">
+              <label for="playerRegisterPassword">Şifre</label>
+              <input type="password" id="playerRegisterPassword" required>
+            </div>
+            <button type="submit" class="button">
+              <i class="fas fa-user-plus"></i>
+              Kayıt Ol
+            </button>
+            <div class="form-switch">
+              <button type="button" onclick="showLoginForm('player')">
+                Zaten hesabınız var mı? Giriş yapın
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="login-card">
+          <h2><i class="fas fa-building"></i> Saha Sahibi Girişi</h2>
+          <form id="adminLoginForm" onsubmit="return handleLogin(event, 'admin')">
+            <div class="form-group">
+              <label for="adminEmail">E-posta</label>
+              <input type="email" id="adminEmail" required>
+            </div>
+            <div class="form-group">
+              <label for="adminPassword">Şifre</label>
+              <input type="password" id="adminPassword" required>
+            </div>
+            <button type="submit" class="button">
+              <i class="fas fa-sign-in-alt"></i>
+              Giriş Yap
+            </button>
+            <div class="form-switch">
+              <button type="button" onclick="showRegisterForm('admin')">
+                Hesabınız yok mu? Hemen kaydolun
+              </button>
+            </div>
+          </form>
+          <form id="adminRegisterForm" style="display: none;" onsubmit="return handleRegister(event, 'admin')">
+            <div class="form-group">
+              <label for="adminRegisterName">Ad Soyad</label>
+              <input type="text" id="adminRegisterName" required>
+            </div>
+            <div class="form-group">
+              <label for="adminRegisterEmail">E-posta</label>
+              <input type="email" id="adminRegisterEmail" required>
+            </div>
+            <div class="form-group">
+              <label for="adminRegisterPhone">Telefon</label>
+              <input type="tel" id="adminRegisterPhone" required>
+            </div>
+            <div class="form-group">
+              <label for="adminRegisterPassword">Şifre</label>
+              <input type="password" id="adminRegisterPassword" required>
+            </div>
+            <button type="submit" class="button">
+              <i class="fas fa-user-plus"></i>
+              Kayıt Ol
+            </button>
+            <div class="form-switch">
+              <button type="button" onclick="showLoginForm('admin')">
+                Zaten hesabınız var mı? Giriş yapın
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="features">
+        <div class="feature-card">
+          <i class="fas fa-search"></i>
+          <h3>Kolay Arama</h3>
+          <p>Şehrinizdeki en iyi futbol sahalarını kolayca bulun</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-calendar-check"></i>
+          <h3>Hızlı Rezervasyon</h3>
+          <p>Birkaç tıklama ile saha rezervasyonu yapın</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-star"></i>
+          <h3>Değerlendirme</h3>
+          <p>Sahaları değerlendirin ve yorum yapın</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-bell"></i>
+          <h3>Bildirimler</h3>
+          <p>Rezervasyon durumunuzdan anında haberdar olun</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function showLoginForm(type) {
+        document.getElementById(`${type}LoginForm`).style.display = 'block';
+        document.getElementById(`${type}RegisterForm`).style.display = 'none';
+      }
+
+      function showRegisterForm(type) {
+        document.getElementById(`${type}LoginForm`).style.display = 'none';
+        document.getElementById(`${type}RegisterForm`).style.display = 'block';
+      }
+
+      function handleLogin(event, type) {
+        event.preventDefault();
+        
+        const email = document.getElementById(`${type}Email`).value;
+        const password = document.getElementById(`${type}Password`).value;
+        
+        const users = JSON.parse(localStorage.getItem('users')) || { player: [], admin: [] };
+        const user = users[type].find(u => u.email === email && u.password === password);
+        
+        if (user) {
+          localStorage.setItem('currentUser', JSON.stringify({
+            ...user,
+            type
+          }));
+          
+          if (type === 'player') {
+            window.location.href = 'player.html';
+          } else {
+            window.location.href = 'admin.html';
+          }
+        } else {
+          alert('E-posta veya şifre hatalı!');
+        }
+        
+        return false;
+      }
+
+      function handleRegister(event, type) {
+        event.preventDefault();
+        
+        const name = document.getElementById(`${type}RegisterName`).value;
+        const email = document.getElementById(`${type}RegisterEmail`).value;
+        const phone = document.getElementById(`${type}RegisterPhone`).value;
+        const password = document.getElementById(`${type}RegisterPassword`).value;
+        
+        const users = JSON.parse(localStorage.getItem('users')) || { player: [], admin: [] };
+        
+        if (users[type].some(u => u.email === email)) {
+          alert('Bu e-posta adresi zaten kullanılıyor!');
+          return false;
+        }
+        
+        users[type].push({
+          id: Date.now().toString(),
+          name,
+          email,
+          phone,
+          password
+        });
+        
+        localStorage.setItem('users', JSON.stringify(users));
+        alert('Kayıt başarılı! Şimdi giriş yapabilirsiniz.');
+        showLoginForm(type);
+        
+        return false;
+      }
+    </script>
+  </body>
+</html> 
